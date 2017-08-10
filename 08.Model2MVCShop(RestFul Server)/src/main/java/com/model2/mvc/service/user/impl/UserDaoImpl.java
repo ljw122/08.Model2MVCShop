@@ -27,8 +27,8 @@ public class UserDaoImpl implements UserDao{
 		this.sqlSession = sqlSession;
 	}
 
-	public void addUser(User user) throws Exception {
-		sqlSession.insert("UserMapper.addUser", user);
+	public int addUser(User user) throws Exception {
+		return sqlSession.insert("UserMapper.addUser", user);
 	}
 
 	public User getUser(String userId) throws Exception {

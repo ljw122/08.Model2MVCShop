@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -43,6 +44,10 @@ public class ProductController {
 	@Value("#{commonProperties['pageSize'] ?: 3}")
 	int pageSize;
 
+	@Autowired
+	@Qualifier("uploadFilePath")
+	private FileSystemResource fsr;
+	
 	String temDir =
 			"C:\\Users\\ljw12\\git\\07.Model2MVCShop\\07.Model2MVCShop(URI,pattern)\\WebContent\\images\\uploadFiles";
 			//request.getServletContext().getRealPath("images\\uploadFiles");
@@ -130,7 +135,7 @@ public class ProductController {
 //		
 		product.setFileName("");
 		if(!file.isEmpty()){
-			FileOutputStream fos = new FileOutputStream(new File(temDir, file.getOriginalFilename()));
+			FileOutputStream fos = new FileOutputStream(new File(fsr.getPath(), file.getOriginalFilename()));
 			fos.write(file.getBytes());
 			fos.flush();
 			fos.close();
@@ -187,7 +192,7 @@ public class ProductController {
 
 
 		if(!file.isEmpty()){
-			file.transferTo(new File(temDir, file.getOriginalFilename()));
+			file.transferTo(new File(fsr.getPath(), file.getOriginalFilename()));
 			product.setFileName(file.getOriginalFilename());
 		}
 		

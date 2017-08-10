@@ -27,8 +27,8 @@ public class UserServiceImpl implements UserService{
 		this.userDao = userDao;
 	}
 
-	public void addUser(User user) throws Exception {
-		userDao.addUser(user);
+	public int addUser(User user) throws Exception {
+		return userDao.addUser(user);
 	}
 
 	public User loginUser(User user) throws Exception {

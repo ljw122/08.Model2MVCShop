@@ -8,7 +8,7 @@ import com.model2.mvc.service.domain.User;
 
 public interface UserService {
 	
-	public void addUser(User user) throws Exception;
+	public int addUser(User user) throws Exception;
 	
 	public User loginUser(User user) throws Exception;
 	

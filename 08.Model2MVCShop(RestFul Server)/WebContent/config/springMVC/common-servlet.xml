@@ -53,13 +53,12 @@
 	<bean id="multipartResolver"
 				class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<property name="maxUploadSize" value="1000000"/>
-		<property name="uploadTempDir" value="images/uploadFiles/"/>
 	</bean>
 	
 	<bean id="uploadFilePath"
 				class="org.springframework.core.io.FileSystemResource">
 		<constructor-arg>
-			<value>images/uploadFiles/</value>
+			<value>C:/Users/ljw12/git/08.Model2MVCShop/08.Model2MVCShop(RestFul Server)/WebContent/images/uploadFiles/</value>
 		</constructor-arg>
 	</bean>
 

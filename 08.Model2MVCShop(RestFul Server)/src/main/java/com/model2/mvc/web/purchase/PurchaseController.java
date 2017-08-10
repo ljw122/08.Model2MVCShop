@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.model2.mvc.common.Page;
@@ -19,6 +20,7 @@ import com.model2.mvc.service.product.ProductService;
 import com.model2.mvc.service.purchase.PurchaseService;
 
 @Controller
+@RequestMapping("purchase/*")
 public class PurchaseController {
 
 	/*Field*/
@@ -42,67 +44,67 @@ public class PurchaseController {
 	}
 	
 	/*Method*/
-	@RequestMapping("addPurchaseView.do")
-	public String addPurchaseView(@RequestParam("prodNo") int prodNo, Model model) throws Exception{
+	@RequestMapping( value="addPurchase", method=RequestMethod.GET )
+	public String addPurchase(@RequestParam("prodNo") int prodNo, Model model) throws Exception{
 		Product product = productService.getProduct(prodNo);
 		
 		model.addAttribute("product", product);
 		
-		return "forward:purchase/addPurchaseView.jsp";
+		return "forward:addPurchaseView.jsp";
 	}
 	
-	@RequestMapping("addPurchase.do")
+	@RequestMapping( value="addPurchase", method=RequestMethod.POST )
 	public String addPurchase(	@ModelAttribute("purchase") Purchase purchase	) throws Exception{
 
 		purchaseService.addPurchase(purchase);
 		
-		return "forward:purchase/addPurchase.jsp";
+		return "forward:addPurchase.jsp";
 	}
 	
-	@RequestMapping("getPurchase.do")
+	@RequestMapping( value="getPurchase", method=RequestMethod.GET )
 	public String getPurchase(	@ModelAttribute("purchase") Purchase purchase,
 								Model model	)throws Exception{
 		purchase = purchaseService.getPurchase(purchase);
 		model.addAttribute("purchase", purchase);
 		
-		return "forward:purchase/getPurchase.jsp";
+		return "forward:getPurchase.jsp";
 	}
 	
-	@RequestMapping("updatePurchaseView.do")
-	public String updatePurchaseView(@ModelAttribute("purchase") Purchase purchase, Model model) throws Exception{
+	@RequestMapping( value="updatePurchase", method=RequestMethod.GET )
+	public String updatePurchase(@ModelAttribute("purchase") Purchase purchase, Model model) throws Exception{
 		purchase = purchaseService.getPurchase(purchase);
 		model.addAttribute("purchase", purchase);
 		
-		return "forward:purchase/updatePurchaseView.jsp";
+		return "forward:updatePurchaseView.jsp";
 	}
 	
-	@RequestMapping("updatePurchase.do")
+	@RequestMapping( value="updatePurchase", method=RequestMethod.POST )
 	public String updatePurchase(	@ModelAttribute("purchase") Purchase purchase	) throws Exception{
 		
 		purchaseService.updatePurchase(purchase);
 		
-		return "forward:getPurchase.do";
+		return "redirect:getPurchase?tranNo="+purchase.getTranNo();
 	}
 	
-	@RequestMapping("listPurchase.do")
+	@RequestMapping( value="listPurchase" )
 	public String listPurchase(	@ModelAttribute("search") Search search,
 								Model model		) throws Exception{
 		
 		this.getList(search, model);
 		
-		return "forward:purchase/listPurchase.jsp";
+		return "forward:listPurchase.jsp";
 	}
 	
-	@RequestMapping("listSale.do")
+	@RequestMapping( value="listSale" )
 	public String listSale(	@ModelAttribute("search") Search search,
 							Model model) throws Exception{
 		
 		this.getList(search, model);
 		
-		return "forward:purchase/listSale.jsp";
+		return "forward:listSale.jsp";
 	}
 
-	@RequestMapping("updateTranCode.do")
+	@RequestMapping( value="updateTranCode", method=RequestMethod.GET )
 	public String updateTranCode(	@RequestParam("menu") String menu,
 									@ModelAttribute("purchase") Purchase purchase	) throws Exception{
 		
@@ -112,9 +114,9 @@ public class PurchaseController {
 		purchaseService.updatePurchase(updatePurchase);
 		
 		if(menu.equals("manage")){
-			return "forward:listSale.do?searchKeyword=saleList";
+			return "forward:listSale?searchKeyword=saleList";
 		}else{
-			return "forward:listPurchase.do?searchCondition="+purchase.getBuyer().getUserId()+"&searchKeyword=purchaseList";
+			return "forward:listPurchase?searchCondition="+purchase.getBuyer().getUserId()+"&searchKeyword=purchaseList";
 		}
 	}
 	
